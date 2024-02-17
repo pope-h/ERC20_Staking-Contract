@@ -95,4 +95,8 @@ contract ERC20Staking {
     function getMinLockPeriod() external view returns (uint256) {
         return minLockPeriod;
     }
+
+    function getOwner() external view returns (address) {
+        return msg.sender;
+    }
 }
