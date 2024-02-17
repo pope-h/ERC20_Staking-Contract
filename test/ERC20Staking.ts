@@ -153,24 +153,25 @@ describe("ERC20Staking", function () {
     });
 
 
-    // FOR THE BELOW, I HAVE TO MAKE THE calculateReward FUNCTION EXTERNAL OR PUBLIC TO ACCESS IT
-    
-    // describe("Rewards", function () {
-    //   it("Should calculate rewards correctly", async function () {
-    //     const { erc20Staking, myERC20, approvedAmount, unlockTime, lockedAmount, owner } =   await loadFixture(
-    //       deployOneYearLockFixture
-    //     );
+    // FOR THE BELOW, I HAVE TO MAKE THE calculateReward FUNCTION PUBLIC OR PUBLIC TO ACCESS IT
+    // THIS CHECK ISN'T DOING WHAT IT IS MEANT FOR... CHECK THE CALCULATE REWARD FUNCTION
+    describe("Rewards", function () {
+      it("Should calculate rewards correctly", async function () {
+        const { erc20Staking, myERC20, approvedAmount, unlockTime, lockedAmount, owner } =   await loadFixture(
+          deployOneYearLockFixture
+        );
 
-    //     await myERC20.approve(erc20Staking.target, approvedAmount);
-    //     await erc20Staking.stake(lockedAmount);
+        await myERC20.approve(erc20Staking.target, approvedAmount);
+        await erc20Staking.stake(lockedAmount);
 
-    //     await time.increaseTo(unlockTime);
+        await time.increase(unlockTime);
 
-    //     const expectedReward = await erc20Staking.calculateReward(lockedAmount, unlockTime);
+        const expectedReward = await erc20Staking.calculateReward(owner.address);
+        console.log("expectedReward: ", (expectedReward).toString());
 
-    //     await expect(erc20Staking.withdraw()).to.changeTokenBalances(myERC20, [owner], [expectedReward]);
-    //   });
-    // });
+        await expect(erc20Staking.withdraw()).to.changeTokenBalances(myERC20, [owner], ["1000000000"]);
+      });
+    });
 
     // describe("Transfers", function () {
     //   it("Should transfer the funds to the owner", async function () {
